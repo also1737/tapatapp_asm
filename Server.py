@@ -39,7 +39,11 @@ def getUser():
 
 @app.route('/prototip/getuser/<string:user>', methods=['GET'])
 def provaGetUser(user):
-    return "usuari: " + user
+    u = daoUser.getUserByUsername(user)
+    if (u):
+        return "Usuari trobat: " + u.__str__()
+    else:
+        return "Usuari no trobat"
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port="10050")
