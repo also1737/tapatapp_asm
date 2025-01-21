@@ -37,6 +37,9 @@ def getUser():
     email = str( request.args.get('email') )
     return "hola hola nom: " + n + ", email: " + email
 
+@app.route('/prototip/getuser/<string:user>', methods=['GET'])
+def provaGetUser(user):
+    return "usuari: " + user
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port="10050")
