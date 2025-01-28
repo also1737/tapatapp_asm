@@ -25,7 +25,6 @@ listUsers = [
 class DAOUsers:
     def __init__(self):
         self.users = listUsers
-
     def getUserByUsername(self, username):
         for u in self.users:
             if u.username == username:
@@ -46,7 +45,6 @@ def getUser():
     n = str( request.args.get('name') )
     email = str( request.args.get('email') )
     return "hola hola nom: " + n + ", email: " + email
-
 
 
 @app.route('/prototip/getuser/<string:user>', methods=['GET'])
