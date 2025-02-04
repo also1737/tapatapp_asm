@@ -25,7 +25,11 @@ class DAOUser:
 
         url = "http://192.168.144.171:10050/prototip/getuser/" + self.username
 
-        response = requests.get(url)
+        try:
+            response = requests.get(url)
+        except Exception:
+            err = Error("no s'ha pogut connectar al servidor")
+            return err
 
         if response.status_code == 200:
             dades = response.json()
@@ -35,6 +39,10 @@ class DAOUser:
             else:
                 e = Error(dades["error"])
                 return e
+        else:
+            err = Error(response.status_code)
+            return err
+            
 
 class View:
     def __init__(self):
