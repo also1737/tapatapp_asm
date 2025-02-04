@@ -1,11 +1,68 @@
 import requests
 
-user = input( "Introdueix nom d'usuari: " )
+class User:
+    def __init__(self, id, username, password, email=""):
+        self.id = id
+        self.username = username
+        self.password = password
+        self.email = email
 
-url = "http://192.168.144.171:10050/prototip/getuser/" + user
+    def mostrar(self):
+        return "Id: " + str(self.id) + "\nUsername: " + self.username + "\nEmail: " + self.email
 
-response = requests.get(url)
+class Error:
+    def __init__(self, errorMsg):
+        self.errorMsg = errorMsg
+    
+    def mostrar(self):
+        return "Error: " + self.errorMsg
 
-if response.status_code == 200:
-    dadesUser = response.json()
-    print(dadesUser)
+class DAOUser:
+    def __init__(self, user):
+        self.username = user
+
+    def getUsuariServer(self):
+
+        url = "http://192.168.144.171:10050/prototip/getuser/" + self.username
+
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            dades = response.json()
+            if "id" in dades :
+                u = User(dades["id"], dades["username"], dades["password"], dades["email"])
+                return u
+            else:
+                e = Error(dades["error"])
+                return e
+
+class View:
+    def __init__(self):
+        self.username = ""
+
+    def getUsuariInput(self):
+        user = input( "Introdueix nom d'usuari: " )
+        self.username = user
+
+    def mostrarUsuari(self, user):
+        print( user.mostrar() )
+
+    def mostrarError(self, error):
+        print( error.mostrar() )
+    
+
+if __name__ == '__main__':
+
+    v = View()
+
+    v.getUsuariInput()
+
+    daoUser = DAOUser(v.username)
+
+    u = daoUser.getUsuariServer()
+
+    if isinstance(u, User):
+        v.mostrarUsuari(u)
+    else:
+        v.mostrarError(u)
+
