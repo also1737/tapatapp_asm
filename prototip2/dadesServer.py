@@ -11,8 +11,8 @@ class User:
         return self.username + ":" + self.password + ":" + self.email
     
 users = [
-    User(id=1, username="mare", password="12345", email="prova@gmail.com"),
-    User(id=2, username="pare", password="123", email="prova2@gmail.com")
+    User(1, "mare", "12345", "prova@gmail.com"),
+    User(2, "pare", "123", "prova2@gmail.com")
 ]
     
 class Child:
@@ -23,10 +23,14 @@ class Child:
         self.treatmentId = treatmentId
         self.time = time
 
+    def __str__(self):
+        return self.name + ":" + str(self.sleepAverage) + ":" + str(self.time)
+    
+
 # Crear les classes Child, Tap, Role, Status i Treatment
 children = [
-    Child(id=1, child_name="Carol Child", sleep_average=8, treatment_id=1, time=6),
-    Child(id=2, child_name="Jaco Child", sleep_average=10, treatment_id=2, time=6)
+    Child(1, "Carol Child", 8, 1, 6),
+    Child(2, "Jaco Child", 10, 2, 6)
 ]
 
 class Tap:
@@ -38,9 +42,12 @@ class Tap:
         self.init = init
         self.end = end
 
+    def __str__(self):
+        return self.init + ":" + self.end
+
 taps = [
-    Tap(id=1, child_id=1, status_id=1, user_id=1, init="2024-12-18T19:42:43", end="2024-12-18T20:42:43"),
-    Tap(id=2, child_id=2, status_id=2, user_id=2, init="2024-12-18T21:42:43", end="2024-12-18T22:42:43")
+    Tap(1, 1, 1, 1, "2024-12-18T19:42:43", "2024-12-18T20:42:43"),
+    Tap(2, 2, 2, 2, "2024-12-18T21:42:43", "2024-12-18T22:42:43")
 ]
 
 relation_user_child = [
@@ -54,32 +61,39 @@ class Role:
     def __init__(self, id, type):
         self.id = id
         self.type = type
+    
+    def __str__(self):
+        return self.type
 
 roles = [
-    Role(id=1, type_rol='Admin'),
-    Role(id=2, type_rol='Tutor Mare Pare'),
-    Role(id=3, type_rol='Cuidador'),
-    Role(id=4, type_rol='Seguiment')
+    Role(1, 'Admin'),
+    Role(2, 'Tutor Mare Pare'),
+    Role(3, 'Cuidador'),
+    Role(4, 'Seguiment')
 ]
 
 class Status:
     def __init__(self, id, name):
         self.id = id
         self.name = name
+    def __str__(self):
+        return self.name
 
 statuses = [
-    Status(id=1, name="sleep"),
-    Status(id=2, name="awake"),
-    Status(id=3, name="yes_eyepatch"),
-    Status(id=4, name="no_eyepatch")
+    Status(1, "sleep"),
+    Status(2, "awake"),
+    Status(3, "yes_eyepatch"),
+    Status(4, "no_eyepatch")
 ]
 
 class Treatment:
     def __init__(self, id, name):
         self.id = id
         self.name = name
+    def __str__(self):
+        return self.name
 
 treatments = [
-    Treatment(id=1, name='Hour'),
-    Treatment(id=2, name='percentage')
+    Treatment(1, 'Hour'),
+    Treatment(2, 'percentage')
 ]
