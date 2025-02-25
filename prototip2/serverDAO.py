@@ -4,6 +4,9 @@ class DAOUser:
     def __init__(self):
         self.users = d.users
     
+    def getAllUsers(self):
+        return [user.__dict__ for user in self.users]
+
     def getUserFromUsername(self, user):
         print(user)
         for u in self.users:
@@ -15,6 +18,9 @@ class DAOChild:
     def __init__(self):
         self.children = d.children
         self.relations = d.relation_user_child
+
+    def getAllChildren(self):
+        return [child.__dict__ for child in self.children]
     
     def getChildIdFromUserId(self, id):
         for r in self.relations:
