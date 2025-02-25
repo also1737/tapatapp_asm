@@ -5,6 +5,7 @@ class DAOUser:
         self.users = d.users
     
     def getUserFromUsername(self, user):
+        print(user)
         for u in self.users:
             if u.username == user :
                 return u
@@ -16,9 +17,10 @@ class DAOChild:
         self.relations = d.relation_user_child
     
     def getChildIdFromUserId(self, id):
-        for u in self.relations:
-            if u.user_id == id :
-                return u.child_id
+        for r in self.relations:
+            print(r)
+            if r['user_id'] == id :
+                return r['child_id']
         return None
     
     def getChildFromChildId(self, id):
