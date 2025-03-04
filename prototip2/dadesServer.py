@@ -1,4 +1,13 @@
 # Dades d'exemple amb List
+
+class Error:
+    def __init__(self, errorMsg):
+        self.errorMsg = errorMsg
+    
+    def __str__(self):
+        return "Error: " + self.errorMsg
+
+
 # Clase User
 class User:
     def __init__(self, id, username, password, email):

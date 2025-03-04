@@ -1,4 +1,5 @@
 import dadesServer as d
+from dadesServer import Error
 
 class DAOUser:
     def __init__(self):
@@ -8,7 +9,6 @@ class DAOUser:
         return [user.__dict__ for user in self.users]
 
     def getUserFromUsername(self, user):
-        print(user)
         for u in self.users:
             if u.username == user :
                 return u
@@ -24,16 +24,15 @@ class DAOChild:
     
     def getChildIdFromUserId(self, id):
         for r in self.relations:
-            print(r)
             if r['user_id'] == id :
                 return r['child_id']
-        return None
+        return Error("Child no trobat")
     
     def getChildFromChildId(self, id):
         for c in self.children:
             if c.id == id:
                 return c
-        return None
+        return Error("Child no trobat")
 
     def __str__(self):
         return self.username + ":" + self.password + ":" + self.email
