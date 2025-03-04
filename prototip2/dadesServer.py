@@ -10,18 +10,22 @@ class Error:
 
 # Clase User
 class User:
-    def __init__(self, id, username, password, email):
-        self.id = id
+
+    user_id = 0
+
+    def __init__(self, username, password, email):
+        self.id = User.user_id
+        User.user_id += 1
         self.username = username
         self.password = password
         self.email = email
     
     def __str__(self):
-        return self.username + ":" + self.password + ":" + self.email
+        return self.username + ":" + self.password + ":" + self.email  + ":" + str(self.id)
     
 users = [
-    User(1, "mare", "12345", "prova@gmail.com"),
-    User(2, "pare", "123", "prova2@gmail.com")
+    User("mare", "12345", "prova@gmail.com"),
+    User("pare", "123", "prova2@gmail.com")
 ]
     
 class Child:

@@ -1,6 +1,5 @@
-import dadesServer as dades
 import serverDAO as dao
-from dadesServer import Error, User, Child, Tap, Status, Treatment
+from dadesServer import Error, User
 
 class Login: #classe que controla el login
     def __init__(self, name, passwd):
@@ -9,7 +8,7 @@ class Login: #classe que controla el login
 
     def validar(self):
         daoUser = dao.DAOUser()
-        user = daoUser.getUserFromUsername(name)
+        user = daoUser.getUserFromUsername(self.name)
         if not user or user.password != self.passwd:
             return Error("Usuari o contrasenya incorrecta")
         else:
