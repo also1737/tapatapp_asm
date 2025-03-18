@@ -1,5 +1,5 @@
 import dadesServer as d
-from dadesServer import Error
+from dadesServer import Error, User
 
 class DAOUser:
     def __init__(self):
@@ -13,6 +13,34 @@ class DAOUser:
             if u.username == user :
                 return u
         return None
+    
+    def getUserFromEmail(self, user):
+        for u in self.users:
+            if u.email == user :
+                return u
+        return None
+    
+    def login(self, name, passwd):
+        user = self.getUserFromEmail(name) if name.find("@") else self.getUserFromUsername(name)
+        #print(user.__dict__)
+        if not user or user.password != passwd:
+            return None
+        else:
+            return user
+        
+    def validarUser(self):
+        result = self.getUserFromUsername(self.user)
+        if isinstance(result, User): #usuario ya existe
+            return Error("Usuari ya existeix")
+        return None
+    
+    def crearUser(self):
+        err = self.validarUser()
+        if not err:
+            u = User(self.user, self.passwd, self.email)
+            d.users.append(u)
+        else:
+            return err
 
 class DAOChild:
     def __init__(self):
