@@ -21,7 +21,7 @@ class DAOUser:
         return None
     
     def login(self, name, passwd):
-        user = self.getUserFromEmail(name) if name.find("@") else self.getUserFromUsername(name)
+        user = self.getUserFromEmail(name) if name.find("@") != -1 else self.getUserFromUsername(name)
         #print(user.__dict__)
         if not user or user.password != passwd:
             return None
