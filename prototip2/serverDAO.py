@@ -28,16 +28,16 @@ class DAOUser:
         else:
             return user
         
-    def validarUser(self):
-        result = self.getUserFromUsername(self.user)
+    def validarUser(self, user):
+        result = self.getUserFromUsername(user)
         if isinstance(result, User): #usuario ya existe
             return Error("Usuari ya existeix")
         return None
     
-    def crearUser(self):
+    def crearUser(self, user, passwd, email):
         err = self.validarUser()
         if not err:
-            u = User(self.user, self.passwd, self.email)
+            u = User(user, passwd, email)
             d.users.append(u)
         else:
             return err

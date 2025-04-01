@@ -11,9 +11,9 @@ def login():
     passwd = request.json['passwd']
     result = daoUser.login(name, passwd)
     if result:
-        return jsonify(result.__dict__)
+        return jsonify(result.__dict__), 200
     else:
-        return jsonify({'error':'usuari o contrasenya incorrectes'})
+        return jsonify({'error':'usuari o contrasenya incorrectes'}), 400
 
 if __name__ == '__main__':
     app.run(debug=True, port="10101")
