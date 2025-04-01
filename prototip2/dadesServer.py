@@ -13,19 +13,20 @@ class User:
 
     user_id = 0
 
-    def __init__(self, username, password, email):
+    def __init__(self, username, password, email, hash):
         self.id = User.user_id
         User.user_id += 1
         self.username = username
         self.password = password
         self.email = email
+        self.hash = hash
     
     def __str__(self):
         return self.username + ":" + self.password + ":" + self.email  + ":" + str(self.id)
     
 users = [
-    User("mare", "12345", "prova@gmail.com"),
-    User("pare", "123", "prova2@gmail.com")
+    User("mare", "12345", "prova@gmail.com", ""),
+    User("pare", "123", "prova2@gmail.com", "")
 ]
     
 class Child:
@@ -110,3 +111,6 @@ treatments = [
     Treatment(1, 'Hour'),
     Treatment(2, 'percentage')
 ]
+
+user_token = {
+}

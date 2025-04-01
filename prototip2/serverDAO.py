@@ -1,9 +1,11 @@
 import dadesServer as d
+import hashlib
 from dadesServer import Error, User
 
 class DAOUser:
     def __init__(self):
         self.users = d.users
+        self.tokens = d.user_token
     
     def getAllUsers(self):
         return [user.__dict__ for user in self.users]
@@ -22,10 +24,15 @@ class DAOUser:
     
     def login(self, name, passwd):
         user = self.getUserFromEmail(name) if name.find("@") != -1 else self.getUserFromUsername(name)
-        #print(user.__dict__)
         if not user or user.password != passwd:
             return None
         else:
+            token = hashlib.sha256()
+            token.update(user.username.encode())
+            token.update(user.email.encode())
+            self.tokens.update( {user.username: token.hexdigest()} )
+            print(self.tokens)
+            user.hash = token.hexdigest()
             return user
         
     def validarUser(self, user):
