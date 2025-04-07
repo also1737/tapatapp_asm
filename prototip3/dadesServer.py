@@ -4,7 +4,7 @@ class Error:
     def __init__(self, errorMsg):
         self.errorMsg = errorMsg
     
-    def __str__(self):
+    def message(self):
         return "Error: " + self.errorMsg
 
 
