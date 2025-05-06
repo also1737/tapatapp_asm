@@ -34,5 +34,10 @@ def showChilds():
         return (child.message()), 200
     return (child.__dict__), 200
 
+@app.route('/users', methods=['GET'])
+def getUsers():
+    res = daoUser.getAllUsers()
+    return res;
+
 if __name__ == '__main__':
     app.run(debug=True, port="10101")

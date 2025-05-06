@@ -1,20 +1,35 @@
-import dadesServer as d
+import mysql.connector
 import hashlib
 from dadesServer import Error, User
 
+connection = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="root",
+    database="tapatapp"
+)
+
 class DAOUser:
-    def __init__(self):
-        self.users = d.users
-        self.tokens = d.user_token
-    
+
     def getAllUsers(self):
-        return [user.__dict__ for user in self.users]
+        #return [user.__dict__ for user in self.users]
+        cursor = connection.cursor()
+        cursor.execute("select * from user")
+        result = cursor.fetchall()
+        res = []
+        for row in result:
+            res.append(row)
+        cursor.close()
+        return res
 
     def getUserFromUsername(self, user):
-        for u in self.users:
-            if u.username == user :
-                return u
-        return None
+        cursor = connection.cursor()
+        query = ("select username, passwd, email, hash from user where name = %s")
+        cursor.execute(query, user)
+        user = User(
+            
+        )
+        cursor.close()
     
     def getUserFromEmail(self, user):
         for u in self.users:
@@ -50,9 +65,6 @@ class DAOUser:
             return err
 
 class DAOChild:
-    def __init__(self):
-        self.children = d.children
-        self.relations = d.relation_user_child
 
     def getAllChildren(self):
         return [child.__dict__ for child in self.children]
