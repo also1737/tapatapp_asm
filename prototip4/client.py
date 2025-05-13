@@ -9,6 +9,20 @@ class Client:
             "passwd": ""
         }
         self.hash = ""
+        self.loggedIn = False
+
+    def menu(self):
+        option = 0
+        while True:
+            print("========[ TapatApp ]========")
+            if self.loggedIn:
+                print("1 - Veure Info infants a càrrec")
+                print("0 - Tancar sessió")
+            else:
+                print("1 - Login")
+                print("0 - Sortir")
+
+            match 
 
     def dadesLogin(self):
         self.dades["name"] = input("Introdueix nom d'usuari o email: ")
@@ -46,4 +60,4 @@ if __name__ == '__main__':
     err = client.peticioLogin()
     print(err)
     print(client.hash)
-    client.consultarChilds()
+    #client.consultarChilds()

@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from serverDAO import DAOUser, DAOChild
-from dadesServer import Error
+from dadesServer import User, Error
 
 app = Flask(__name__)
 daoUser = DAOUser()
@@ -11,10 +11,10 @@ def login():
     name = request.json['name']
     passwd = request.json['passwd']
     result = daoUser.login(name, passwd)
-    if result:
+    if isinstance(result, User):
         return jsonify(result.__dict__), 200
     else:
-        return jsonify({'error':'usuari o contrasenya incorrectes'}), 400
+        return jsonify({'error':result.getMessage()}), 400
 
 @app.route('/childs', methods=['POST'])
 def showChilds():
@@ -31,13 +31,8 @@ def showChilds():
     child = daoChild.getChildFromChildId(child_id)
 
     if isinstance(child, Error):
-        return (child.message()), 200
+        return jsonify({'Error': child.getMessage()}), 200
     return (child.__dict__), 200
-
-@app.route('/users', methods=['GET'])
-def getUsers():
-    res = daoUser.getAllUsers()
-    return res;
 
 if __name__ == '__main__':
     app.run(debug=True, port="10101")

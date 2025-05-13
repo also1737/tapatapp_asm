@@ -4,7 +4,7 @@ class Error:
     def __init__(self, errorMsg):
         self.errorMsg = errorMsg
     
-    def message(self):
+    def getMessage(self):
         return "Error: " + self.errorMsg
 
 # Clase User

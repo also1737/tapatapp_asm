@@ -11,6 +11,11 @@ connection = mysql.connector.connect(
 
 class DAOUser:
 
+    def __init__(self):
+        self.tokens = {
+
+        }
+
     def getAllUsers(self):
         #return [user.__dict__ for user in self.users]
         cursor = connection.cursor()
@@ -23,24 +28,45 @@ class DAOUser:
         return res
 
     def getUserFromUsername(self, user):
-        cursor = connection.cursor()
-        query = ("select username, passwd, email, hash from user where name = %s")
-        cursor.execute(query, user)
-        user = User(
-            
-        )
-        cursor.close()
+        cursor = connection.cursor(buffered=True)
+        query = ("select username, passwd, email, hash from user where username = %s")
+        data = (user, )
+        cursor.execute(query, data)
+
+        if cursor.rowcount == 0:
+            return Error("Usuari no trobat")
+        else:
+            result = cursor.fetchone()
+            user = User(
+                result[0],
+                result[1],
+                result[2],
+                result[3]
+            )
+            cursor.close()
+            return user
     
-    def getUserFromEmail(self, user):
-        for u in self.users:
-            if u.email == user :
-                return u
-        return None
+    def getUserFromEmail(self, email):
+        cursor = connection.cursor()
+        query = ("select username, passwd, email, hash from user where email = %s")
+        data = (email, )
+        cursor.execute(query, email)
+        if cursor.rowcount == 0:
+            return Error("Usuari no trobat")
+        else:
+            user = User(
+                cursor.fetchone()[0],
+                cursor.fetchone()[1],
+                cursor.fetchone()[2],
+                cursor.fetchone()[3]
+            )
+            cursor.close()
+            return user
     
     def login(self, name, passwd):
         user = self.getUserFromEmail(name) if name.find("@") != -1 else self.getUserFromUsername(name)
-        if not user or user.password != passwd:
-            return None
+        if not isinstance(user, User) or user.password != passwd:
+            return Error("Login incorrecte")
         else:
             token = hashlib.sha256()
             token.update(user.username.encode())
