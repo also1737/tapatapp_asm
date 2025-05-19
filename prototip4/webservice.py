@@ -22,7 +22,6 @@ def showChilds():
     auth_header = request.headers.get('Authorization')
     token_user = daoUser.tokens[name]
 
-
     if not auth_header or auth_header.split(" ")[1] != token_user:
         return jsonify({'Error': 'Accés no autoritzat'}), 401
 
