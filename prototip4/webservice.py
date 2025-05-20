@@ -36,5 +36,19 @@ def showChilds():
 
     return jsonify(child), 200
 
+@app.route('/child', methods=['POST'])
+def veureTractamentChild():
+    name = request.json['username']
+    child_id = request.json['child_id']
+    auth_header = request.headers.get('Authorization')
+    token_user = daoUser.tokens[name]#
+
+    if not auth_header or auth_header.split(" ")[1] != token_user:
+        return jsonify({'Error': 'Accés no autoritzat'}), 401
+    
+    child = daoChild.getChildFromChildId(child_id)
+    print(child)
+    
+
 if __name__ == '__main__':
     app.run(debug=True, port="10101")

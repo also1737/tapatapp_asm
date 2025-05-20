@@ -80,7 +80,6 @@ class DAOUser:
         token.update(user.email.encode())
 
         self.tokens.update( {user.username: token.hexdigest()} )
-        print(self.tokens)
 
         user.hash = token.hexdigest()
         return user
@@ -135,8 +134,7 @@ class DAOChild:
         
         cursor.close()
 
-        return res
-        
+        return res    
     
     def getChildFromChildId(self, child_ids):
 
@@ -157,6 +155,18 @@ class DAOChild:
         cursor.close()
 
         return res
+
+    def getChildTapInfo(self, child_id):
+        cursor = connection.cursor()
+        query = """
+            select c.name, c.sleep_average, c.time, s.name as "status", 
+            tr.name as "treatment", t.init, t.end from child c 
+            inner join tap t on (c.id = t.child_id) 
+            inner join treatment tr on (c.treatment_id = tr.id) 
+            inner join status s on (t.status_id = s.id);
+            """
+        
+        cursor.execute(query, child_id)
 
     def __str__(self):
         return self.username + ":" + self.password + ":" + self.email

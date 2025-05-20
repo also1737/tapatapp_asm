@@ -18,6 +18,7 @@ class Client:
             if self.loggedIn:
                 print(f"Sessió iniciada com a {self.dades['username']}")
                 print("1 - Veure Info infants a càrrec")
+                print("2 - Veure tractament infant")
                 print("0 - Tancar sessió")
             else:
                 print("1 - Iniciar sessió")
@@ -35,7 +36,10 @@ class Client:
                         self.consultarChilds()
                     else:
                         self.peticioLogin()
-                    
+
+                case 2:
+                    if self.loggedIn:
+                        self.veureTractament()
                     
                 case 0:
                     if self.loggedIn:
@@ -54,7 +58,6 @@ class Client:
         self.dades["username"] = ""
         self.dades["passwd"] = ""
         self.hash = ""
-
 
     def dadesLogin(self):
         self.dades["username"] = input("Introdueix nom d'usuari o email: ")
@@ -81,8 +84,6 @@ class Client:
         except (ConnectionError, ConnectionRefusedError) as e:
             print(f"Error al connectar al servidor: {type(e).__name__}")
 
-        
-
     def consultarChilds(self):
 
         dades = {"username": self.dades["username"]}
@@ -107,6 +108,14 @@ class Client:
 
         except Exception as e:
             print(f"Error al connectar al servidor: {type(e).__name__}")
+
+    def veureTractament(self):
+
+        self.consultarChilds()
+        child_id = int(input("Introdueix ID de l'infant: "))
+
+        
+
 
 
 if __name__ == '__main__':
