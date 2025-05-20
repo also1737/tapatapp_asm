@@ -10,11 +10,8 @@ class Error:
 # Clase User
 class User:
 
-    user_id = 0
-
-    def __init__(self, username, password, email, hash):
-        self.id = User.user_id
-        User.user_id += 1
+    def __init__(self, id, username, password, email, hash):
+        self.id = id
         self.username = username
         self.password = password
         self.email = email

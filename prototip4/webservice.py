@@ -18,6 +18,7 @@ def login():
 
 @app.route('/childs', methods=['POST'])
 def showChilds():
+
     name = request.json['name']
     auth_header = request.headers.get('Authorization')
     token_user = daoUser.tokens[name]
@@ -27,11 +28,13 @@ def showChilds():
 
     user = daoUser.getUserFromUsername(name)
     child_id = daoChild.getChildIdFromUserId(user.id)
+
+    if isinstance(child_id, Error):
+        return jsonify({'Error': child_id.getMessage()}), 200
+
     child = daoChild.getChildFromChildId(child_id)
 
-    if isinstance(child, Error):
-        return jsonify({'Error': child.getMessage()}), 200
-    return (child.__dict__), 200
+    return jsonify(child), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port="10101")

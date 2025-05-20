@@ -9,12 +9,12 @@ class Client:
             "passwd": ""
         }
         self.hash = ""
-        self.loggedIn = True
+        self.loggedIn = False
 
     def menu(self):
         option = -1
         while True:
-            print("========[ TapatApp ]========")
+            print("\n\n========[ TapatApp ]========")
             if self.loggedIn:
                 print("1 - Veure Info infants a càrrec")
                 print("0 - Tancar sessió")
@@ -24,7 +24,8 @@ class Client:
                 
             try:
                 option = int(input("> "))
-            except ValueError as v:
+                print()
+            except ValueError:
                 option = -1
 
             match option:
@@ -34,6 +35,7 @@ class Client:
                     else:
                         self.peticioLogin()
                     
+                    
                 case 0:
                     if self.loggedIn:
                         self.loggedIn = False
@@ -41,6 +43,7 @@ class Client:
                     else:
                         print("Sortint del programa...")
                         quit()
+                    
                     
                 case _:
                     print("Opció incorrecta. Intenta de nou")
@@ -61,12 +64,19 @@ class Client:
         self.dadesLogin()
         try:
             resposta = requests.post(self.url + "login", json=self.dades)
+
+
+            res = resposta.json()
+
             if resposta.status_code == 200:
-                res = resposta.json()
                 self.hash = res["hash"]
-                self.loggedin = True
+                self.loggedIn = True
+
+                print(f"Sessió iniciada. Benvolgut/da, {res["name"]}")
+
             else:
-                return resposta.text
+                
+                print(res["error"])
             
         except Exception as e:
             print(f"Error al connectar al servidor: {type(e).__name__}")
@@ -75,22 +85,29 @@ class Client:
 
     def consultarChilds(self):
 
-        dades = {
-            "name": self.dades["name"]
-        }
-        headers = {
-            "Authorization": "Bearer " + self.hash
-        }
+        dades = {"name": self.dades["name"]}
+        headers = {"Authorization": "Bearer " + self.hash}
 
         try:
             resposta = requests.post(self.url + "childs", json=dades, headers=headers)
 
             if resposta.status_code == 200:
-                print(resposta.text)
+
+                resultat = resposta.json()
+                
+                print("Id\t|Name\t\t|Sleep\t|Treatment\t|Time")
+                print("------------------------------------------------------")
+
+                for row in resultat:
+                    print(f"{row[0]}\t|{row[1]}\t|{row[2]}\t|{row[3]}\t\t|{row[4]}")
+
             else:
+
                 print("Error: " , resposta.text)
+
         except Exception as e:
             print(f"Error al connectar al servidor: {type(e).__name__}")
+
 
 if __name__ == '__main__':
     client = Client()
