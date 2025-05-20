@@ -5,7 +5,7 @@ class Client:
     def __init__(self):
         self.url = "http://127.0.0.1:10101/"
         self.dades = {
-            "name": "",
+            "username": "",
             "passwd": ""
         }
         self.hash = ""
@@ -16,6 +16,7 @@ class Client:
         while True:
             print("\n\n========[ TapatApp ]========")
             if self.loggedIn:
+                print(f"Sessió iniciada com a {self.dades['username']}")
                 print("1 - Veure Info infants a càrrec")
                 print("0 - Tancar sessió")
             else:
@@ -50,13 +51,13 @@ class Client:
 
 
     def esborrarDades(self):
-        self.dades["name"] = ""
+        self.dades["username"] = ""
         self.dades["passwd"] = ""
         self.hash = ""
 
 
     def dadesLogin(self):
-        self.dades["name"] = input("Introdueix nom d'usuari o email: ")
+        self.dades["username"] = input("Introdueix nom d'usuari o email: ")
         self.dades["passwd"] = input("Introdueix contrasenya: ")
 
     def peticioLogin(self):
@@ -72,20 +73,19 @@ class Client:
                 self.hash = res["hash"]
                 self.loggedIn = True
 
-                print(f"Sessió iniciada. Benvolgut/da, {res["name"]}")
+                print(f"Sessió iniciada. Benvolgut/da, {res['username']}")
 
             else:
                 
                 print(res["error"])
-            
-        except Exception as e:
+        except (ConnectionError, ConnectionRefusedError) as e:
             print(f"Error al connectar al servidor: {type(e).__name__}")
 
         
 
     def consultarChilds(self):
 
-        dades = {"name": self.dades["name"]}
+        dades = {"username": self.dades["username"]}
         headers = {"Authorization": "Bearer " + self.hash}
 
         try:

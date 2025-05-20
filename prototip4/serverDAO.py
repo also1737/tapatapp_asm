@@ -70,7 +70,7 @@ class DAOUser:
     
     def login(self, name, passwd):
 
-        user = self.getUserFromUsername(name) if name.find("@") == -1 else self.getUserFromEmail(name)
+        user = self.getUserFromEmail(name) if name.find("@") != -1 else self.getUserFromUsername(name)
 
         if not isinstance(user, User) or user.password != passwd:
             return Error("Login incorrecte")

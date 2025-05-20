@@ -8,7 +8,7 @@ daoChild = DAOChild()
 
 @app.route('/login', methods=['POST'])
 def login():
-    name = request.json['name']
+    name = request.json['username']
     passwd = request.json['passwd']
     result = daoUser.login(name, passwd)
     if isinstance(result, User):
@@ -19,7 +19,7 @@ def login():
 @app.route('/childs', methods=['POST'])
 def showChilds():
 
-    name = request.json['name']
+    name = request.json['username']
     auth_header = request.headers.get('Authorization')
     token_user = daoUser.tokens[name]
 
